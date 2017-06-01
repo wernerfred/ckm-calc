@@ -9,42 +9,71 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
   </head>
 
   <body>
     <div id="app">
       <h1>{{message}}</h1>
+
       <div class="container">
         <div class="row">
-            <div class="col-md-2 col-sm-3">
-              <button type=button class="btn btn-primary btn-lg btn-block">+ Punsch 3,50€</button>
-            </div>
-            <div class="col-md-2 col-sm-3">
-              <button type=button class="btn btn-primary btn-lg btn-block">- Punsch 3,50€</button>
-            </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-            <div class="col-md-2 col-sm-3">
-              <button type=button class="btn btn-primary btn-lg btn-block">+ Kinder 2,50€</button>
-            </div>
-            <div class="col-md-2 col-sm-3">
-              <button type=button class="btn btn-primary btn-lg btn-block">- Kinder 2,50€</button>
-            </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="row">
-            <div class="col-md-2 col-sm-3">
-              <button type=button class="btn btn-primary btn-lg btn-block">+ Schuss 1,50€</button>
-            </div>
-            <div class="col-md-2 col-sm-3">
-              <button type=button class="btn btn-primary btn-lg btn-block">- Schuss 1,50€</button>
-            </div>
+          <div class="col-md-6 col-xs-6">
+            <div class="text">Summe: </div>
+          </div>
         </div>
       </div>
 
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-primary btn-lg btn-block">+ Punsch 3,50€</button>
+            </div>
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-warning btn-lg btn-block">- Punsch 3,50€</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-primary btn-lg btn-block">+ Kinder 2,50€</button>
+          </div>
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-warning btn-lg btn-block">- Kinder 2,50€</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-primary btn-lg btn-block">+ Schuss 1,50€</button>
+          </div>
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-warning btn-lg btn-block">- Schuss 1,50€</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-primary btn-lg btn-block">+ Pfand 2,00€</button>
+          </div>
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-warning btn-lg btn-block">- Pfand 2,00€</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-xs-12">
+            <button type=button class="btn btn-danger btn-lg btn-block">Clear</button>
+          </div>
   </body>
 
   <script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
