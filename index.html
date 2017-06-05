@@ -39,10 +39,6 @@
             <div class="text-left" v-if="summe >= 20 && summe <=50">{{auf50}}€</div>
             <div class="text-left" v-if="summe >= 30 && summe <=60">{{auf60}}€</div>
             <div class="text-left" v-if="summe >= 40 && summe <=100">{{auf100}}€</div>
-
-
-
-
           </div>
         </div>
       </div>
@@ -51,9 +47,12 @@
         <div class="row">
           <div class="col-md-6 col-xs-6">
             <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 3,50€</button>
-            </div>
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">- Punsch 3,50€</button>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-3,50</button>
           </div>
         </div>
       </div>
@@ -63,8 +62,11 @@
           <div class="col-md-6 col-xs-6">
             <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 2,50€</button>
           </div>
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">- Kinder&nbsp 2,50€</button>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-2,50</button>
           </div>
         </div>
       </div>
@@ -74,8 +76,11 @@
           <div class="col-md-6 col-xs-6">
             <button type=button class="btn btn-primary btn-lg btn-block" @click="addSchuss">+ Schuss 1,50€</button>
           </div>
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeSchuss">- Schuss 1,50€</button>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-lg btn-block">{{countSchuss}}</button>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeSchuss">-1,50</button>
           </div>
         </div>
       </div>
@@ -85,8 +90,11 @@
           <div class="col-md-6 col-xs-6">
             <button type=button class="btn btn-primary btn-lg btn-block" @click="addPfand">+ Pfand&nbsp&nbsp 2,00€</button>
           </div>
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">- Pfand&nbsp&nbsp 2,00€</button>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-lg btn-block">{{countPfand}}</button>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">-2,00</button>
           </div>
         </div>
       </div>
@@ -109,7 +117,11 @@
         punsch: 3.5,
         kinderpunsch: 2.5,
         schuss: 1.5,
-        pfand: 2
+        pfand: 2,
+        countPunsch: 0,
+        countKinder: 0,
+        countSchuss: 0,
+        countPfand:0
       },
       computed: {
         auf10: function(){
@@ -139,30 +151,50 @@
       },
       methods: {
         addPunsch: function(){
+          this.countPunsch += 1
+          this.countPfand += 1
+          this.summe += this.pfand
           return this.summe += this.punsch
         },
         removePunsch: function(){
+          this.countPunsch -= 1
+          this.countPfand -= 1
+          this.summe -= this.pfand
           return this.summe -= this.punsch
         },
         addKinder: function(){
+          this.countKinder += 1
+          this.countPfand += 1
+          this.summe += this.pfand
           return this.summe += this.kinderpunsch
         },
         removeKinder: function(){
+          this.countKinder -= 1
+          this.countPfand -= 1
+          this.summe -= this.pfand
           return this.summe -= this.kinderpunsch
         },
         addSchuss: function(){
+          this.countSchuss += 1
           return this.summe += this.schuss
         },
         removeSchuss: function(){
+          this.countSchuss -= 1
           return this.summe -= this.schuss
         },
         addPfand: function(){
+          this.countPfand += 1
           return this.summe += this.pfand
         },
         removePfand: function(){
+          this.countPfand -= 1
           return this.summe -= this.pfand
         },
         clear: function(){
+          this.countPunsch = 0
+          this.countKinder = 0
+          this.countSchuss = 0
+          this.countPfand = 0
           return this.summe = 0
         }
       }
