@@ -20,7 +20,17 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <div class="text">Summe: {{summe}}€</div>
+            <div class="text-center h3">Summe: {{summe}}€</div>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <div class="text-right">auf 10€:</div>
+            <div class="text-right">auf 20€:</div>
+            <div class="text-right">auf 50€:</div>
+          </div>
+          <div class="col-md-3 col-xs-3">
+            <div class="text-left">{{auf10}}€</div>
+            <div class="text-left">{{auf20}}€</div>
+            <div class="text-left">{{auf50}}€</div>
           </div>
         </div>
       </div>
@@ -84,14 +94,25 @@
       data: {
         message: 'CKM - Calc',
         summe: 0,
-        punsch: 3.50,
-        kinderpunsch: 2.50,
-        schuss: 1.50,
-        pfand: 2.00
+        punsch: 3.5,
+        kinderpunsch: 2.5,
+        schuss: 1.5,
+        pfand: 2
+      },
+      computed: {
+        auf10: function(){
+          return (10 - this.summe).toFixed(2)
+        },
+        auf20: function(){
+          return (20 - this.summe).toFixed(2)
+        },
+        auf50: function(){
+          return (50 - this.summe).toFixed(2)
+        }
       },
       methods: {
         addPunsch: function(){
-          return this.summe += this.punsch
+          return this.summe.toFixed(2) += this.punsch
         },
         removePunsch: function(){
           return this.summe -= this.punsch
