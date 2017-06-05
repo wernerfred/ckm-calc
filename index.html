@@ -20,7 +20,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <div class="text-center h3">Summe: {{summe}}€</div>
+            <div class="text-center h3">Summe: {{summeCom}}€</div>
           </div>
           <div class="col-md-3 col-xs-3">
             <div class="text-right">auf 10€:</div>
@@ -108,11 +108,14 @@
         },
         auf50: function(){
           return (50 - this.summe).toFixed(2)
+        },
+        summeCom: function() {
+          return this.summe.toFixed(2)
         }
       },
       methods: {
         addPunsch: function(){
-          return this.summe.toFixed(2) += this.punsch
+          return this.summe += this.punsch
         },
         removePunsch: function(){
           return this.summe -= this.punsch
