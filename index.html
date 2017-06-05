@@ -20,7 +20,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <div class="text">Summe: </div>
+            <div class="text">Summe: {{summe}}€</div>
           </div>
         </div>
       </div>
@@ -28,10 +28,10 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block">+ Punsch 3,50€</button>
+            <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 3,50€</button>
             </div>
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block">- Punsch 3,50€</button>
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">- Punsch 3,50€</button>
           </div>
         </div>
       </div>
@@ -39,21 +39,10 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block">+ Kinder&nbsp 2,50€</button>
+            <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 2,50€</button>
           </div>
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block">- Kinder&nbsp 2,50€</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block">+ Schuss 1,50€</button>
-          </div>
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block">- Schuss 1,50€</button>
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">- Kinder&nbsp 2,50€</button>
           </div>
         </div>
       </div>
@@ -61,10 +50,21 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block">+ Pfand&nbsp&nbsp 2,00€</button>
+            <button type=button class="btn btn-primary btn-lg btn-block" @click="addSchuss">+ Schuss 1,50€</button>
           </div>
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-warning btn-lg btn-block">- Pfand&nbsp&nbsp 2,00€</button>
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeSchuss">- Schuss 1,50€</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-primary btn-lg btn-block" @click="addPfand">+ Pfand&nbsp&nbsp 2,00€</button>
+          </div>
+          <div class="col-md-6 col-xs-6">
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">- Pfand&nbsp&nbsp 2,00€</button>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
       <div class="container">
         <div class="row">
           <div class="col-md-12 col-xs-12">
-            <button type=button class="btn btn-danger btn-lg btn-block">Clear</button>
+            <button type=button class="btn btn-danger btn-lg btn-block" @click="clear">Clear</button>
           </div>
   </body>
 
@@ -82,7 +82,41 @@
     var app = new Vue({
       el: '#app',
       data: {
-        message: 'CKM - Calc'
+        message: 'CKM - Calc',
+        summe: 0,
+        punsch: 3.50,
+        kinderpunsch: 2.50,
+        schuss: 1.50,
+        pfand: 2.00
+      },
+      methods: {
+        addPunsch: function(){
+          return this.summe += this.punsch
+        },
+        removePunsch: function(){
+          return this.summe -= this.punsch
+        },
+        addKinder: function(){
+          return this.summe += this.kinderpunsch
+        },
+        removeKinder: function(){
+          return this.summe -= this.kinderpunsch
+        },
+        addSchuss: function(){
+          return this.summe += this.schuss
+        },
+        removeSchuss: function(){
+          return this.summe -= this.schuss
+        },
+        addPfand: function(){
+          return this.summe += this.pfand
+        },
+        removePfand: function(){
+          return this.summe -= this.pfand
+        },
+        clear: function(){
+          return this.summe = 0
+        }
       }
     })
   </script>
