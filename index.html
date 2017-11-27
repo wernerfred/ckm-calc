@@ -46,13 +46,13 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 3,50€</button>
+            <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 4,50€</button>
           </div>
           <div class="col-md-3 col-xs-3">
             <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
           </div>
           <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-3,50</button>
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-4,50</button>
           </div>
         </div>
       </div>
@@ -60,13 +60,13 @@
       <div class="container">
         <div class="row">
           <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 2,50€</button>
+            <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 3,50€</button>
           </div>
           <div class="col-md-3 col-xs-3">
             <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
           </div>
           <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-2,50</button>
+            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-3,50</button>
           </div>
         </div>
       </div>
@@ -109,13 +109,13 @@
   <script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
 
   <script>
-    var app = new Vue({
+    var app = new Vue({	
       el: '#app',
       data: {
         message: 'CKM 2017 Punsch Rechner',
         summe: 0,
-        punsch: 3.5,
-        kinderpunsch: 2.5,
+        punsch: 2.5,
+        kinderpunsch: 1.5,
         schuss: 1.5,
         pfand: 2,
         countPunsch: 0,
