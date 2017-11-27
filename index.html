@@ -26,19 +26,19 @@
             <div class="text-right" v-if="summe <= 10">auf 10€:</div>
             <div class="text-right" v-if="summe <= 20">auf 20€:</div>
             <div class="text-right" v-if="summe <= 30">auf 30€:</div>
-            <div class="text-right" v-if="summe >= 10 && summe <= 40">auf 40€:</div>
-            <div class="text-right" v-if="summe >= 20 && summe <= 50">auf 50€:</div>
-            <div class="text-right" v-if="summe >= 30 && summe <= 60">auf 60€:</div>
-            <div class="text-right" v-if="summe >= 40 && summe <= 100">auf 100€:</div>
+            <div class="text-right" v-if="summe > 10 && summe <= 40">auf 40€:</div>
+            <div class="text-right" v-if="summe > 20 && summe <= 50">auf 50€:</div>
+            <div class="text-right" v-if="summe > 30 && summe <= 60">auf 60€:</div>
+            <div class="text-right" v-if="summe > 40 && summe <= 100">auf 100€:</div>
           </div>
           <div class="col-md-3 col-xs-3">
-            <div class="text-left" v-if="summe <=10">{{auf10}}€</div>
-            <div class="text-left" v-if="summe <=20">{{auf20}}€</div>
-            <div class="text-left" v-if="summe <=30">{{auf30}}€</div>
-            <div class="text-left" v-if="summe >= 10 && summe <=40">{{auf40}}€</div>
-            <div class="text-left" v-if="summe >= 20 && summe <=50">{{auf50}}€</div>
-            <div class="text-left" v-if="summe >= 30 && summe <=60">{{auf60}}€</div>
-            <div class="text-left" v-if="summe >= 40 && summe <=100">{{auf100}}€</div>
+            <div class="text-left" v-if="summe <= 10">{{auf10}}€</div>
+            <div class="text-left" v-if="summe <= 20">{{auf20}}€</div>
+            <div class="text-left" v-if="summe <= 30">{{auf30}}€</div>
+            <div class="text-left" v-if="summe > 10 && summe <= 40">{{auf40}}€</div>
+            <div class="text-left" v-if="summe > 20 && summe <= 50">{{auf50}}€</div>
+            <div class="text-left" v-if="summe > 30 && summe <= 60">{{auf60}}€</div>
+            <div class="text-left" v-if="summe > 40 && summe <= 100">{{auf100}}€</div>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@
             <button type=button class="btn btn-primary btn-lg btn-block" @click="addPfand">+ Pfand&nbsp&nbsp 2,00€</button>
           </div>
           <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-lg btn-block">{{countPfand}}</button>
+            <button type=button class="btn btn-lg btn-block">{{countPfand}} - {{countPfandMinus}}</button>
           </div>
           <div class="col-md-3 col-xs-3">
             <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">-2,00</button>
@@ -121,7 +121,8 @@
         countPunsch: 0,
         countKinder: 0,
         countSchuss: 0,
-        countPfand:0
+        countPfand:0,
+	countPfandMinus:0
       },
       computed: {
         auf10: function(){
@@ -187,7 +188,7 @@
           return this.summe += this.pfand
         },
         removePfand: function(){
-          this.countPfand -= 1
+          this.countPfandMinus += 1
           return this.summe -= this.pfand
         },
         clear: function(){
@@ -195,6 +196,7 @@
           this.countKinder = 0
           this.countSchuss = 0
           this.countPfand = 0
+	  this.countPfandMinus = 0
           return this.summe = 0
         }
       }
