@@ -1,205 +1,208 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CKM Calc</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CKM Calc</title>
 
-  </head>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
 
-  <body>
-    <div id="app">
-      <h2 class="text-center">{{message}}</h2>
+</head>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-6">
-            <div class="text-center h3">Summe: {{summeCom}}€</div>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <div class="text-right" v-if="summe <= 10">auf 10€:</div>
-            <div class="text-right" v-if="summe <= 20">auf 20€:</div>
-            <div class="text-right" v-if="summe <= 30">auf 30€:</div>
-            <div class="text-right" v-if="summe > 10 && summe <= 40">auf 40€:</div>
-            <div class="text-right" v-if="summe > 20 && summe <= 50">auf 50€:</div>
-            <div class="text-right" v-if="summe > 30 && summe <= 60">auf 60€:</div>
-            <div class="text-right" v-if="summe > 40 && summe <= 100">auf 100€:</div>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <div class="text-left" v-if="summe <= 10">{{auf10}}€</div>
-            <div class="text-left" v-if="summe <= 20">{{auf20}}€</div>
-            <div class="text-left" v-if="summe <= 30">{{auf30}}€</div>
-            <div class="text-left" v-if="summe > 10 && summe <= 40">{{auf40}}€</div>
-            <div class="text-left" v-if="summe > 20 && summe <= 50">{{auf50}}€</div>
-            <div class="text-left" v-if="summe > 30 && summe <= 60">{{auf60}}€</div>
-            <div class="text-left" v-if="summe > 40 && summe <= 100">{{auf100}}€</div>
-          </div>
+<body>
+  <div id="app">
+    <h2 class="text-center">{{message}}</h2>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <div class="text-center h3">Summe: {{summeCom}}€</div>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <div class="text-right" v-if="summe <= 10">auf 10€:</div>
+          <div class="text-right" v-if="summe <= 20">auf 20€:</div>
+          <div class="text-right" v-if="summe <= 30">auf 30€:</div>
+          <div class="text-right" v-if="summe > 10 && summe <= 40">auf 40€:</div>
+          <div class="text-right" v-if="summe > 20 && summe <= 50">auf 50€:</div>
+          <div class="text-right" v-if="summe > 30 && summe <= 60">auf 60€:</div>
+          <div class="text-right" v-if="summe > 40 && summe <= 100">auf 100€:</div>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <div class="text-left" v-if="summe <= 10">{{auf10}}€</div>
+          <div class="text-left" v-if="summe <= 20">{{auf20}}€</div>
+          <div class="text-left" v-if="summe <= 30">{{auf30}}€</div>
+          <div class="text-left" v-if="summe > 10 && summe <= 40">{{auf40}}€</div>
+          <div class="text-left" v-if="summe > 20 && summe <= 50">{{auf50}}€</div>
+          <div class="text-left" v-if="summe > 30 && summe <= 60">{{auf60}}€</div>
+          <div class="text-left" v-if="summe > 40 && summe <= 100">{{auf100}}€</div>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 5,00€</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-5,00</button>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 5,00€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-5,00</button>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 4,00€</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-4,00</button>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 4,00€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-4,00</button>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block" @click="addSchuss">+ Schuss 1,50€</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-lg btn-block">{{countSchuss}}</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removeSchuss">-1,50</button>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addSchuss">+ Schuss 1,50€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countSchuss}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeSchuss">-1,50</button>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-xs-6">
-            <button type=button class="btn btn-primary btn-lg btn-block" @click="addPfand">+ Pfand&nbsp&nbsp 2,00€</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-lg btn-block">{{countPfand}} - {{countPfandMinus}}</button>
-          </div>
-          <div class="col-md-3 col-xs-3">
-            <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">-2,00</button>
-          </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPfand">+ Pfand&nbsp&nbsp
+            2,00€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countPfand}} - {{countPfandMinus}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">-2,00</button>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12 col-xs-12">
-            <button type=button class="btn btn-danger btn-lg btn-block" @click="clear">Clear</button>
-          </div>
-  </body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 col-xs-12">
+          <button type=button class="btn btn-danger btn-lg btn-block" @click="clear">Clear</button>
+        </div>
+</body>
 
-  <script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
+<script src="https://unpkg.com/vue@2.0.3/dist/vue.js"></script>
 
-  <script>
-    var app = new Vue({	
-      el: '#app',
-      data: {
-        message: 'CKM 2019 Punsch Rechner',
-        summe: 0,
-        punsch: 3.0,
-        kinderpunsch: 2.0,
-        schuss: 1.5,
-        pfand: 2,
-        countPunsch: 0,
-        countKinder: 0,
-        countSchuss: 0,
-        countPfand:0,
-	countPfandMinus:0
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      message: 'CKM 2022 Punsch Rechner',
+      summe: 0,
+      punsch: 3.0,
+      kinderpunsch: 2.0,
+      schuss: 1.5,
+      pfand: 2,
+      countPunsch: 0,
+      countKinder: 0,
+      countSchuss: 0,
+      countPfand: 0,
+      countPfandMinus: 0
+    },
+    computed: {
+      auf10: function () {
+        return (10 - this.summe).toFixed(2)
       },
-      computed: {
-        auf10: function(){
-          return (10 - this.summe).toFixed(2)
-        },
-        auf20: function(){
-          return (20 - this.summe).toFixed(2)
-        },
-        auf30: function(){
-          return (30 - this.summe).toFixed(2)
-        },
-        auf40: function(){
-          return (40 - this.summe).toFixed(2)
-        },
-        auf50: function(){
-          return (50 - this.summe).toFixed(2)
-        },
-        auf60: function(){
-          return (60 - this.summe).toFixed(2)
-        },
-        auf100: function(){
-          return (100 - this.summe).toFixed(2)
-        },
-        summeCom: function() {
-          return this.summe.toFixed(2)
-        }
+      auf20: function () {
+        return (20 - this.summe).toFixed(2)
       },
-      methods: {
-        addPunsch: function(){
-          this.countPunsch += 1
-          this.countPfand += 1
-          this.summe += this.pfand
-          return this.summe += this.punsch
-        },
-        removePunsch: function(){
-          this.countPunsch -= 1
-          this.countPfand -= 1
-          this.summe -= this.pfand
-          return this.summe -= this.punsch
-        },
-        addKinder: function(){
-          this.countKinder += 1
-          this.countPfand += 1
-          this.summe += this.pfand
-          return this.summe += this.kinderpunsch
-        },
-        removeKinder: function(){
-          this.countKinder -= 1
-          this.countPfand -= 1
-          this.summe -= this.pfand
-          return this.summe -= this.kinderpunsch
-        },
-        addSchuss: function(){
-          this.countSchuss += 1
-          return this.summe += this.schuss
-        },
-        removeSchuss: function(){
-          this.countSchuss -= 1
-          return this.summe -= this.schuss
-        },
-        addPfand: function(){
-          this.countPfand += 1
-          return this.summe += this.pfand
-        },
-        removePfand: function(){
-          this.countPfandMinus += 1
-          return this.summe -= this.pfand
-        },
-        clear: function(){
-          this.countPunsch = 0
-          this.countKinder = 0
-          this.countSchuss = 0
-          this.countPfand = 0
-	  this.countPfandMinus = 0
-          return this.summe = 0
-        }
+      auf30: function () {
+        return (30 - this.summe).toFixed(2)
+      },
+      auf40: function () {
+        return (40 - this.summe).toFixed(2)
+      },
+      auf50: function () {
+        return (50 - this.summe).toFixed(2)
+      },
+      auf60: function () {
+        return (60 - this.summe).toFixed(2)
+      },
+      auf100: function () {
+        return (100 - this.summe).toFixed(2)
+      },
+      summeCom: function () {
+        return this.summe.toFixed(2)
       }
-    })
-  </script>
+    },
+    methods: {
+      addPunsch: function () {
+        this.countPunsch += 1
+        this.countPfand += 1
+        this.summe += this.pfand
+        return this.summe += this.punsch
+      },
+      removePunsch: function () {
+        this.countPunsch -= 1
+        this.countPfand -= 1
+        this.summe -= this.pfand
+        return this.summe -= this.punsch
+      },
+      addKinder: function () {
+        this.countKinder += 1
+        this.countPfand += 1
+        this.summe += this.pfand
+        return this.summe += this.kinderpunsch
+      },
+      removeKinder: function () {
+        this.countKinder -= 1
+        this.countPfand -= 1
+        this.summe -= this.pfand
+        return this.summe -= this.kinderpunsch
+      },
+      addSchuss: function () {
+        this.countSchuss += 1
+        return this.summe += this.schuss
+      },
+      removeSchuss: function () {
+        this.countSchuss -= 1
+        return this.summe -= this.schuss
+      },
+      addPfand: function () {
+        this.countPfand += 1
+        return this.summe += this.pfand
+      },
+      removePfand: function () {
+        this.countPfandMinus += 1
+        return this.summe -= this.pfand
+      },
+      clear: function () {
+        this.countPunsch = 0
+        this.countKinder = 0
+        this.countSchuss = 0
+        this.countPfand = 0
+        this.countPfandMinus = 0
+        return this.summe = 0
+      }
+    }
+  })
+</script>
+
 </html>
