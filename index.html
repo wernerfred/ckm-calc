@@ -47,13 +47,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 5,00€</button>
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addKaffee">+ Kaffee/Schoki/Schnaps
+            4,00€</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
+          <button type=button class="btn btn-lg btn-block">{{countKaffee}}</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-5,00</button>
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKaffee">-4,00</button>
         </div>
       </div>
     </div>
@@ -61,13 +62,29 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 4,00€</button>
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addLumumba">+ Lumumba/Caipi&nbsp
+            6,00€</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
+          <button type=button class="btn btn-lg btn-block">{{countLumumba}}</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-4,00</button>
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeLumumba">-6,00</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addApfel">+ Apfel/Nussschnaps
+            5,00€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countApfel}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeApfel">-5,00</button>
         </div>
       </div>
     </div>
@@ -114,14 +131,16 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'CKM 2022 Punsch Rechner',
+      message: 'CKM 22 Cocktail Rechner',
       summe: 0,
-      punsch: 3.0,
-      kinderpunsch: 2.0,
+      kaffee: 2.0,
+      lumumba: 4.0,
+      apfel: 3.0,
       schuss: 1.5,
       pfand: 2,
-      countPunsch: 0,
-      countKinder: 0,
+      countApfel: 0,
+      countKaffee: 0,
+      countLumumba: 0,
       countSchuss: 0,
       countPfand: 0,
       countPfandMinus: 0
@@ -153,29 +172,41 @@
       }
     },
     methods: {
-      addPunsch: function () {
-        this.countPunsch += 1
+      addApfel: function () {
+        this.countApfel += 1
         this.countPfand += 1
         this.summe += this.pfand
-        return this.summe += this.punsch
+        return this.summe += this.apfel
       },
-      removePunsch: function () {
-        this.countPunsch -= 1
+      removeApfel: function () {
+        this.countApfel -= 1
         this.countPfand -= 1
         this.summe -= this.pfand
-        return this.summe -= this.punsch
+        return this.summe -= this.apfel
       },
-      addKinder: function () {
-        this.countKinder += 1
+      addKaffee: function () {
+        this.countKaffee += 1
         this.countPfand += 1
         this.summe += this.pfand
-        return this.summe += this.kinderpunsch
+        return this.summe += this.kaffee
       },
-      removeKinder: function () {
-        this.countKinder -= 1
+      removeKaffee: function () {
+        this.countKaffee -= 1
         this.countPfand -= 1
         this.summe -= this.pfand
-        return this.summe -= this.kinderpunsch
+        return this.summe -= this.kaffee
+      },
+      addLumumba: function () {
+        this.countLumumba += 1
+        this.countPfand += 1
+        this.summe += this.pfand
+        return this.summe += this.lumumba
+      },
+      removeLumumba: function () {
+        this.countLumumba -= 1
+        this.countPfand -= 1
+        this.summe -= this.pfand
+        return this.summe -= this.lumumba
       },
       addSchuss: function () {
         this.countSchuss += 1
@@ -194,8 +225,9 @@
         return this.summe -= this.pfand
       },
       clear: function () {
-        this.countPunsch = 0
-        this.countKinder = 0
+        this.countKaffee = 0
+        this.countApfel = 0
+        this.countLumumba = 0
         this.countSchuss = 0
         this.countPfand = 0
         this.countPfandMinus = 0
