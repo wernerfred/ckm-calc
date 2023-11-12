@@ -117,6 +117,36 @@
 
     <div class="container">
       <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addAlkfrei">+ alkf. Getränk&nbsp&nbsp
+            2,50€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countAlkfrei}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeAlkfrei">-2,50</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-xs-6">
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addBier">+ Bier&nbsp&nbsp
+            3,00€</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-lg btn-block">{{countBier}}</button>
+        </div>
+        <div class="col-md-3 col-xs-3">
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeBier">-3,00</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
         <div class="col-md-12 col-xs-12">
           <button type=button class="btn btn-danger btn-lg btn-block" @click="clear">Clear</button>
         </div>
@@ -128,19 +158,23 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'CKM 22 Cocktail Rechner',
+      message: 'CKM 23 Cocktail Rechner',
       summe: 0,
       kaffee: 2.0,
       lumumba: 4.0,
       apfel: 3.0,
       schuss: 1.5,
       pfand: 2,
+      alkfrei: 2.5,
+      bier: 3,
       countApfel: 0,
       countKaffee: 0,
       countLumumba: 0,
       countSchuss: 0,
       countPfand: 0,
-      countPfandMinus: 0
+      countPfandMinus: 0,
+      countAlkfrei: 0,
+      countBier: 0,
     },
     computed: {
       auf10: function () {
@@ -221,6 +255,22 @@
         this.countPfandMinus += 1
         return this.summe -= this.pfand
       },
+      addAlkfrei: function () {
+        this.countAlkfrei += 1
+        return this.summe += this.alkfrei
+      },
+      removeAlkfrei: function () {
+        this.countAlkfrei -= 1
+        return this.summe -= this.alkfrei
+      },
+      addBier: function () {
+        this.countBier += 1
+        return this.summe += this.bier
+      },
+      removeBier: function () {
+        this.countBier -= 1
+        return this.summe -= this.bier
+      },
       clear: function () {
         this.countKaffee = 0
         this.countApfel = 0
@@ -228,6 +278,8 @@
         this.countSchuss = 0
         this.countPfand = 0
         this.countPfandMinus = 0
+        this.countAlkfrei = 0
+        this.countBier = 0
         return this.summe = 0
       }
     }
