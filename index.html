@@ -47,13 +47,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 5,00€</button>
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addWuerstel2">+ 2 Würstel 3,00€</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
+          <button type=button class="btn btn-lg btn-block">{{countWuerstel2}}</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-5,00</button>
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeWuerstel2">-3,00</button>
         </div>
       </div>
     </div>
@@ -61,42 +61,14 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 4,00€</button>
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addWuerstel4">+ 4 Würstel&nbsp
+            5,00€</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
+          <button type=button class="btn btn-lg btn-block">{{countWuerstel4}}</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-4,00</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addSchuss">+ Schuss 1,50€</button>
-        </div>
-        <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-lg btn-block">{{countSchuss}}</button>
-        </div>
-        <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeSchuss">-1,50</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPfand">+ Pfand&nbsp&nbsp
-            2,00€</button>
-        </div>
-        <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-lg btn-block">{{countPfand}} - {{countPfandMinus}}</button>
-        </div>
-        <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePfand">-2,00</button>
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeWuerstel4">-5,00</button>
         </div>
       </div>
     </div>
@@ -144,19 +116,15 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'CKM 2023 Punsch Rechner',
+      message: 'CKM 2023 Würstel Rechner',
       summe: 0,
-      punsch: 3.0,
-      kinderpunsch: 2.0,
-      schuss: 1.5,
-      pfand: 2,
+      wuerstel2: 3.0,
+      wuerstel4: 5.0,
       alkfrei: 2.5,
       bier: 3,
-      countPunsch: 0,
-      countKinder: 0,
+      countWuerstel2: 0,
+      countWuerstel4: 0,
       countSchuss: 0,
-      countPfand: 0,
-      countPfandMinus: 0,
       countAlkfrei: 0,
       countBier: 0,
     },
@@ -187,45 +155,21 @@
       }
     },
     methods: {
-      addPunsch: function () {
-        this.countPunsch += 1
-        this.countPfand += 1
-        this.summe += this.pfand
-        return this.summe += this.punsch
+      addWuerstel2: function () {
+        this.countWuerstel2 += 1
+        return this.summe += this.wuerstel2
       },
-      removePunsch: function () {
-        this.countPunsch -= 1
-        this.countPfand -= 1
-        this.summe -= this.pfand
-        return this.summe -= this.punsch
+      removeWuerstel2: function () {
+        this.countWuerstel2 -= 1
+        return this.summe -= this.wuerstel2
       },
-      addKinder: function () {
-        this.countKinder += 1
-        this.countPfand += 1
-        this.summe += this.pfand
-        return this.summe += this.kinderpunsch
+      addWuerstel4: function () {
+        this.countWuerstel4 += 1
+        return this.summe += this.wuerstel4
       },
-      removeKinder: function () {
-        this.countKinder -= 1
-        this.countPfand -= 1
-        this.summe -= this.pfand
-        return this.summe -= this.kinderpunsch
-      },
-      addSchuss: function () {
-        this.countSchuss += 1
-        return this.summe += this.schuss
-      },
-      removeSchuss: function () {
-        this.countSchuss -= 1
-        return this.summe -= this.schuss
-      },
-      addPfand: function () {
-        this.countPfand += 1
-        return this.summe += this.pfand
-      },
-      removePfand: function () {
-        this.countPfandMinus += 1
-        return this.summe -= this.pfand
+      removeWuerstel4: function () {
+        this.countWuerstel4 -= 1
+        return this.summe -= this.wuerstel4
       },
       addAlkfrei: function () {
         this.countAlkfrei += 1
@@ -244,11 +188,8 @@
         return this.summe -= this.bier
       },
       clear: function () {
-        this.countPunsch = 0
-        this.countKinder = 0
-        this.countSchuss = 0
-        this.countPfand = 0
-        this.countPfandMinus = 0
+        this.countWuerstel2 = 0
+        this.countWuerstel4 = 0
         this.countAlkfrei = 0
         this.countBier = 0
         return this.summe = 0
