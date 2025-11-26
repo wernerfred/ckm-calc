@@ -47,13 +47,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 5,50€</button>
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addPunsch">+ Punsch 6,00€</button>
         </div>
         <div class="col-md-3 col-xs-3">
           <button type=button class="btn btn-lg btn-block">{{countPunsch}}</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-5,50</button>
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removePunsch">-6,00</button>
         </div>
       </div>
     </div>
@@ -61,13 +61,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6 col-xs-6">
-          <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 4,50€</button>
+          <button type=button class="btn btn-primary btn-lg btn-block" @click="addKinder">+ Kinder&nbsp 5,00€</button>
         </div>
         <div class="col-md-3 col-xs-3">
           <button type=button class="btn btn-lg btn-block">{{countKinder}}</button>
         </div>
         <div class="col-md-3 col-xs-3">
-          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-4,50</button>
+          <button type=button class="btn btn-warning btn-lg btn-block" @click="removeKinder">-5,00</button>
         </div>
       </div>
     </div>
@@ -143,10 +143,10 @@
   var app = new Vue({
     el: '#app',
     data: {
-      message: 'CKM 2023 Punsch Rechner',
+      message: 'CKM 2025 Punsch Rechner',
       summe: 0,
-      punsch: 3.5,
-      kinderpunsch: 2.5,
+      punsch: 4.0,
+      kinderpunsch: 3.0,
       schuss: 1.5,
       pfand: 2,
       alkfrei: 2.5,
