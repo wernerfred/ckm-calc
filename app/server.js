@@ -64,11 +64,8 @@ function normalizePrice(value, fallback) {
 }
 
 function sanitizeItems(items, fallbackItems) {
-  if (!Array.isArray(items)) {
-    return clone(fallbackItems);
-  }
-
-  const safe = items
+  const sourceItems = Array.isArray(items) ? items : fallbackItems;
+  const safe = sourceItems
     .map((item, index) => {
       const fallback = fallbackItems[index] || fallbackItems[0] || { id: `item-${index}`, name: `Item ${index + 1}`, price: 0 };
       const id = typeof item?.id === "string" && item.id.trim() ? item.id.trim() : fallback.id;
@@ -82,7 +79,20 @@ function sanitizeItems(items, fallbackItems) {
     })
     .filter((item) => item.id);
 
-  return safe.length ? safe : clone(fallbackItems);
+  const fallbackDeposit = fallbackItems.find((item) => item.id === "deposit");
+  const nonDeposit = safe.filter((item) => item.id !== "deposit");
+  if (!fallbackDeposit) {
+    return nonDeposit.length ? nonDeposit : clone(fallbackItems);
+  }
+
+  const safeDeposit = safe.find((item) => item.id === "deposit");
+  const deposit = {
+    id: "deposit",
+    name: safeDeposit?.name || fallbackDeposit.name,
+    price: normalizePrice(safeDeposit?.price, fallbackDeposit.price),
+    autoDeposit: false
+  };
+  return [...nonDeposit, deposit];
 }
 
 function sanitizeCatalogs(catalogs) {

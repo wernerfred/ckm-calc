@@ -1,4 +1,4 @@
-const CACHE_NAME = "ckm-kasse-v4";
+const CACHE_NAME = "ckm-kasse-v5";
 const APP_ASSETS = [
   "./",
   "./index.html",

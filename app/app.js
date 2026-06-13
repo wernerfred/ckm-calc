@@ -7,7 +7,8 @@ const FALLBACK_ITEMS = [
   { id: "bier", name: "Bier", price: 3, autoDeposit: false },
   { id: "deposit", name: "Pfand", price: 2, autoDeposit: false }
 ];
-let ITEMS = FALLBACK_ITEMS;
+const CALC_FALLBACK_ITEMS = getCalcFallbackItems();
+let ITEMS = CALC_FALLBACK_ITEMS;
 let DEPOSIT_ITEM = null;
 let HAS_DEPOSIT = false;
 let DEPOSIT_PRICE = 0;
@@ -26,7 +27,7 @@ boot();
 
 async function boot() {
   const catalogs = await loadCatalogsWithFallback();
-  const selectedItems = catalogs[CALC_ID] || FALLBACK_ITEMS;
+  const selectedItems = catalogs[CALC_ID] || CALC_FALLBACK_ITEMS;
   configureCatalog(selectedItems);
   state = loadState();
 
@@ -41,7 +42,10 @@ async function boot() {
 }
 
 function configureCatalog(items) {
-  ITEMS = Array.isArray(items) && items.length ? items : FALLBACK_ITEMS;
+  const sourceItems = Array.isArray(items) && items.length ? items : CALC_FALLBACK_ITEMS;
+  const nonDeposit = sourceItems.filter((item) => item.id !== "deposit");
+  const deposit = sourceItems.find((item) => item.id === "deposit") || CALC_FALLBACK_ITEMS.find((item) => item.id === "deposit");
+  ITEMS = deposit ? [...nonDeposit, deposit] : nonDeposit;
   DEPOSIT_ITEM = ITEMS.find((item) => item.id === "deposit") || null;
   HAS_DEPOSIT = Boolean(DEPOSIT_ITEM);
   DEPOSIT_PRICE = DEPOSIT_ITEM ? DEPOSIT_ITEM.price : 0;
@@ -55,6 +59,14 @@ function configureCatalog(items) {
       manualRemoved: 0
     }
   };
+}
+
+function getCalcFallbackItems() {
+  const fromCatalogs = window.CKM?.defaultCatalogs?.[CALC_ID];
+  if (Array.isArray(fromCatalogs) && fromCatalogs.length) {
+    return JSON.parse(JSON.stringify(fromCatalogs));
+  }
+  return FALLBACK_ITEMS;
 }
 
 async function loadCatalogsWithFallback() {
