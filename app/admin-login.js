@@ -1,6 +1,7 @@
 const form = document.getElementById("loginForm");
 const passwordInput = document.getElementById("password");
 const messageEl = document.getElementById("message");
+const apiPath = createApiPathResolver();
 
 checkStatus();
 
@@ -10,7 +11,7 @@ form.addEventListener("submit", async (event) => {
   messageEl.textContent = "";
 
   try {
-    const response = await fetch("/api/admin/login", {
+    const response = await fetch(apiPath("/api/admin/login"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ password })
@@ -32,7 +33,7 @@ form.addEventListener("submit", async (event) => {
 
 async function checkStatus() {
   try {
-    const response = await fetch("/api/admin/status", { cache: "no-store" });
+    const response = await fetch(apiPath("/api/admin/status"), { cache: "no-store" });
     if (!response.ok) {
       return;
     }
@@ -55,4 +56,14 @@ async function safeJson(response) {
   } catch {
     return null;
   }
+}
+
+function createApiPathResolver() {
+  if (window.location.protocol !== "file:") {
+    return (path) => path;
+  }
+  const configuredOrigin = localStorage.getItem("ckm_api_origin");
+  const fallbackOrigin = "http://localhost:8080";
+  const origin = (configuredOrigin || fallbackOrigin).replace(/\/+$/, "");
+  return (path) => `${origin}${path.startsWith("/") ? path : `/${path}`}`;
 }

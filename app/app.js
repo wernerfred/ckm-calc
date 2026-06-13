@@ -7,7 +7,8 @@ const FALLBACK_ITEMS = [
   { id: "bier", name: "Bier", price: 3, autoDeposit: false },
   { id: "deposit", name: "Pfand", price: 2, autoDeposit: false }
 ];
-let ITEMS = FALLBACK_ITEMS;
+const CALC_FALLBACK_ITEMS = getCalcFallbackItems();
+let ITEMS = CALC_FALLBACK_ITEMS;
 let DEPOSIT_ITEM = null;
 let HAS_DEPOSIT = false;
 let DEPOSIT_PRICE = 0;
@@ -20,28 +21,37 @@ const totalEl = document.getElementById("total");
 const hintsEl = document.getElementById("changeHints");
 const rowsEl = document.getElementById("rows");
 const resetEl = document.getElementById("reset");
+const ITEM_TITLE_MAX_PX = 31;
+const ITEM_TITLE_MIN_PX = 10;
+let fitTitlesRafId = 0;
 
 registerServiceWorker();
 boot();
 
 async function boot() {
   const catalogs = await loadCatalogsWithFallback();
-  const selectedItems = catalogs[CALC_ID] || FALLBACK_ITEMS;
+  const selectedItems = catalogs[CALC_ID] || CALC_FALLBACK_ITEMS;
   configureCatalog(selectedItems);
   state = loadState();
 
   renderRows();
   render();
+  scheduleFitItemTitleSize();
 
   resetEl.addEventListener("click", () => {
     state = cloneInitialState();
     persist();
     render();
   });
+
+  window.addEventListener("resize", scheduleFitItemTitleSize);
 }
 
 function configureCatalog(items) {
-  ITEMS = Array.isArray(items) && items.length ? items : FALLBACK_ITEMS;
+  const sourceItems = Array.isArray(items) && items.length ? items : CALC_FALLBACK_ITEMS;
+  const nonDeposit = sourceItems.filter((item) => item.id !== "deposit");
+  const deposit = sourceItems.find((item) => item.id === "deposit") || CALC_FALLBACK_ITEMS.find((item) => item.id === "deposit");
+  ITEMS = deposit ? [...nonDeposit, deposit] : nonDeposit;
   DEPOSIT_ITEM = ITEMS.find((item) => item.id === "deposit") || null;
   HAS_DEPOSIT = Boolean(DEPOSIT_ITEM);
   DEPOSIT_PRICE = DEPOSIT_ITEM ? DEPOSIT_ITEM.price : 0;
@@ -55,6 +65,14 @@ function configureCatalog(items) {
       manualRemoved: 0
     }
   };
+}
+
+function getCalcFallbackItems() {
+  const fromCatalogs = window.CKM?.defaultCatalogs?.[CALC_ID];
+  if (Array.isArray(fromCatalogs) && fromCatalogs.length) {
+    return JSON.parse(JSON.stringify(fromCatalogs));
+  }
+  return FALLBACK_ITEMS;
 }
 
 async function loadCatalogsWithFallback() {
@@ -105,6 +123,8 @@ function renderRows() {
     rowsEl.appendChild(row);
   });
 
+  scheduleFitItemTitleSize();
+
   rowsEl.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-action]");
     if (!button) {
@@ -119,12 +139,67 @@ function renderRows() {
   });
 }
 
+function scheduleFitItemTitleSize() {
+  if (fitTitlesRafId) {
+    cancelAnimationFrame(fitTitlesRafId);
+  }
+  fitTitlesRafId = requestAnimationFrame(() => {
+    fitTitlesRafId = 0;
+    fitItemTitleSize();
+  });
+}
+
+function fitItemTitleSize() {
+  const titleEls = Array.from(rowsEl.querySelectorAll(".item h2"));
+  if (!titleEls.length) {
+    return;
+  }
+
+  titleEls.forEach((el) => {
+    el.style.fontSize = "";
+  });
+
+  const cssMaxForViewport = Number.parseFloat(getComputedStyle(titleEls[0]).fontSize) || ITEM_TITLE_MAX_PX;
+  const maxPx = Math.min(ITEM_TITLE_MAX_PX, cssMaxForViewport);
+
+  let low = ITEM_TITLE_MIN_PX;
+  let high = maxPx;
+  let best = ITEM_TITLE_MIN_PX;
+
+  const fitsAt = (px) => {
+    titleEls.forEach((el) => {
+      el.style.fontSize = `${px}px`;
+    });
+    return titleEls.every((el) => el.scrollWidth <= el.clientWidth + 1);
+  };
+
+  if (!fitsAt(low)) {
+    return;
+  }
+
+  while (high - low > 0.5) {
+    const mid = (low + high) / 2;
+    if (fitsAt(mid)) {
+      best = mid;
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  titleEls.forEach((el) => {
+    el.style.fontSize = `${best.toFixed(2)}px`;
+  });
+}
+
 function applyAction(id, action) {
   if (id === "deposit" && HAS_DEPOSIT) {
     if (action === "plus") {
       state.deposit.manualAdded += 1;
+      trackStatPress(id, "plus");
     } else {
       state.deposit.manualRemoved += 1;
+      trackStatPress(id, "minus");
     }
     return;
   }
@@ -132,8 +207,10 @@ function applyAction(id, action) {
   const current = state.counts[id] || 0;
   if (action === "plus") {
     state.counts[id] = current + 1;
+    trackStatPress(id, "plus");
     if (HAS_DEPOSIT && AUTO_DEPOSIT_ITEM_IDS.has(id)) {
       state.deposit.autoFromDrinks += 1;
+      trackStatPress("deposit", "plus");
     }
     return;
   }
@@ -146,6 +223,32 @@ function applyAction(id, action) {
   if (HAS_DEPOSIT && AUTO_DEPOSIT_ITEM_IDS.has(id) && state.deposit.autoFromDrinks > 0) {
     state.deposit.autoFromDrinks -= 1;
   }
+}
+
+function trackStatPress(itemId, action) {
+  const item = ITEMS.find((entry) => entry.id === itemId);
+  const statsPressUrl = window.CKM?.apiPath ? window.CKM.apiPath("/api/stats/press") : "/api/stats/press";
+  const payload = JSON.stringify({
+    calcId: CALC_ID,
+    itemId,
+    itemName: item?.name || itemId,
+    action: action === "minus" ? "minus" : "plus"
+  });
+
+  try {
+    if (navigator.sendBeacon) {
+      const blob = new Blob([payload], { type: "application/json" });
+      navigator.sendBeacon(statsPressUrl, blob);
+      return;
+    }
+  } catch {}
+
+  fetch(statsPressUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payload,
+    keepalive: true
+  }).catch(() => {});
 }
 
 function render() {

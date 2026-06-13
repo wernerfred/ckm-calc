@@ -15,7 +15,7 @@ html, body {
 }
 
 body {
-  font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+  font-family: "Roboto Condensed", "Arial Narrow", "Liberation Sans Narrow", "Helvetica Neue", "Segoe UI", sans-serif;
   color: var(--text);
   background: linear-gradient(165deg, var(--bg), var(--bg-soft));
 }

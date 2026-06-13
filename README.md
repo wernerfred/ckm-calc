@@ -2,6 +2,14 @@
 
 Mobile-first cash register web app for CKM with variants (`Punsch`, `Cocktail`, `Würstel`), admin editing, and offline-capable frontend caching.
 
+## Local Run
+
+```bash
+ADMIN_PASSWORD='change-me' node app/server.js
+```
+
+Open: `http://localhost:8080`
+
 ## Docker (recommended)
 
 Build:
@@ -21,6 +29,7 @@ Open: `http://localhost:8080`
 Notes:
 
 - Admin catalog changes are written to `/data/catalogs.json` inside the container.
+- Verkaufsstatistik wird nach `/data/stats.json` geschrieben und bleibt mit `-v "$(pwd)/data:/data"` über Container-Neustarts erhalten.
 - By mounting `$(pwd)/data:/data`, changes survive container restarts/redeploys.
 - Admin pages are password-protected. The password is provided via `ADMIN_PASSWORD` at container start.
 - Frontend service worker cache keeps the app usable during short connectivity loss.
@@ -29,5 +38,6 @@ Notes:
 
 - `/` launcher
 - `/punsch.html`, `/cocktail.html`, `/wurstel.html` calculator variants
+- `/statistik.html` Verkaufsstatistik mit Graphen pro Artikel
 - `/admin.html` admin launcher
 - `/admin-edit.html?calc=punsch|cocktail|wurstel` item editor

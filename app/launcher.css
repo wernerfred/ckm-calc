@@ -18,7 +18,7 @@ body {
 }
 
 body {
-  font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+  font-family: "Roboto Condensed", "Arial Narrow", "Liberation Sans Narrow", "Helvetica Neue", "Segoe UI", sans-serif;
   color: var(--text);
   background: linear-gradient(165deg, var(--bg), var(--bg-soft));
 }
@@ -66,7 +66,7 @@ p {
 
 .aux-actions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   gap: 0.45rem;
 }
 

@@ -1,0 +1,104 @@
+{
+  "punsch": [
+    {
+      "id": "punsch",
+      "name": "Punsch",
+      "price": 4,
+      "autoDeposit": true
+    },
+    {
+      "id": "kinderpunsch",
+      "name": "Kinderpunsch",
+      "price": 3,
+      "autoDeposit": true
+    },
+    {
+      "id": "schuss",
+      "name": "Schuss",
+      "price": 1.5,
+      "autoDeposit": false
+    },
+    {
+      "id": "bier",
+      "name": "Bier",
+      "price": 3,
+      "autoDeposit": false
+    },
+    {
+      "id": "deposit",
+      "name": "Pfand",
+      "price": 2,
+      "autoDeposit": false
+    }
+  ],
+  "cocktail": [
+    {
+      "id": "kaffe_heisse_schokolade",
+      "name": "Kaffe / Heiße Schokolade",
+      "price": 2.5,
+      "autoDeposit": true
+    },
+    {
+      "id": "lumumba_apfelpunsch",
+      "name": "Lumumba / Apfelpunsch",
+      "price": 4,
+      "autoDeposit": true
+    },
+    {
+      "id": "apfelpunsch_alkfr",
+      "name": "Apfelpunsch alkfr.",
+      "price": 3,
+      "autoDeposit": true
+    },
+    {
+      "id": "glueh_gin_schneezauber",
+      "name": "Glüh Gin / Schneezauber",
+      "price": 5,
+      "autoDeposit": true
+    },
+    {
+      "id": "schnaps",
+      "name": "Schnaps",
+      "price": 2,
+      "autoDeposit": true
+    },
+    {
+      "id": "nussschnaps",
+      "name": "Nussschnaps",
+      "price": 3,
+      "autoDeposit": true
+    },
+    {
+      "id": "deposit",
+      "name": "Pfand",
+      "price": 2,
+      "autoDeposit": false
+    }
+  ],
+  "wurstel": [
+    {
+      "id": "w2",
+      "name": "2 Würstel",
+      "price": 3.5,
+      "autoDeposit": false
+    },
+    {
+      "id": "w4",
+      "name": "4 Würstel",
+      "price": 6,
+      "autoDeposit": false
+    },
+    {
+      "id": "kaltgetraenk",
+      "name": "Kaltgetränk",
+      "price": 2.5,
+      "autoDeposit": false
+    },
+    {
+      "id": "bier",
+      "name": "Bier",
+      "price": 3,
+      "autoDeposit": false
+    }
+  ]
+}

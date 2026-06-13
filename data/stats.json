@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "updatedAt": 1781383036113,
+  "items": {
+    "punsch:punsch": {
+      "calcId": "punsch",
+      "itemId": "punsch",
+      "itemName": "Punsch",
+      "total": 10,
+      "totalPlus": 10,
+      "totalMinus": 0,
+      "series": [
+        {
+          "bucket": 1781382600000,
+          "countPlus": 10,
+          "countMinus": 0
+        }
+      ]
+    },
+    "punsch:deposit": {
+      "calcId": "punsch",
+      "itemId": "deposit",
+      "itemName": "Pfand",
+      "total": 11,
+      "totalPlus": 11,
+      "totalMinus": 8,
+      "series": [
+        {
+          "bucket": 1781382600000,
+          "countPlus": 11,
+          "countMinus": 8
+        }
+      ]
+    },
+    "punsch:schuss": {
+      "calcId": "punsch",
+      "itemId": "schuss",
+      "itemName": "Schuss",
+      "total": 4,
+      "totalPlus": 4,
+      "totalMinus": 0,
+      "series": [
+        {
+          "bucket": 1781382600000,
+          "countPlus": 4,
+          "countMinus": 0
+        }
+      ]
+    },
+    "punsch:kinderpunsch": {
+      "calcId": "punsch",
+      "itemId": "kinderpunsch",
+      "itemName": "Kinderpunsch",
+      "total": 5,
+      "totalPlus": 5,
+      "totalMinus": 0,
+      "series": [
+        {
+          "bucket": 1781382600000,
+          "countPlus": 5,
+          "countMinus": 0
+        }
+      ]
+    }
+  }
+}

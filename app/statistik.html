@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12343b" />
+    <title>CKM Statistik</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="statistik.css" />
+  </head>
+  <body>
+    <main class="stats-page">
+      <header class="stats-header">
+        <h1>Statistik</h1>
+        <a class="back-btn" href="./index.html">Zurück</a>
+      </header>
+      <p class="subtitle">Button-Presses pro Artikel (15-Minuten-Balken, erste Press links, letzte Press rechts)</p>
+      <div id="lastUpdated" class="last-updated"></div>
+      <section id="statsContent" class="stats-content" aria-live="polite"></section>
+    </main>
+
+    <script src="catalogs.js"></script>
+    <script src="statistik.js"></script>
+  </body>
+</html>

@@ -6,12 +6,16 @@ const path = require("path");
 const PORT = Number.parseInt(process.env.PORT || "8080", 10);
 const HOST = process.env.HOST || "0.0.0.0";
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "";
-const PUBLIC_DIR = path.resolve(process.env.PUBLIC_DIR || process.cwd());
-const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(process.cwd(), "data"));
+const PUBLIC_DIR = path.resolve(process.env.PUBLIC_DIR || __dirname);
+const DATA_DIR = path.resolve(process.env.DATA_DIR || path.join(__dirname, "..", "data"));
 const CATALOG_FILE = path.join(DATA_DIR, "catalogs.json");
+const STATS_FILE = path.join(DATA_DIR, "stats.json");
 const SESSION_COOKIE_NAME = "ckm_admin_session";
 const SESSION_TTL_MS = 8 * 60 * 60 * 1000;
 const adminSessions = new Map();
+const STATS_BUCKET_MS = 15 * 60 * 1000;
+const STATS_SERIES_LIMIT = 672;
+let statsOpQueue = Promise.resolve();
 
 const MIME_TYPES = {
   ".html": "text/html; charset=utf-8",
@@ -64,11 +68,8 @@ function normalizePrice(value, fallback) {
 }
 
 function sanitizeItems(items, fallbackItems) {
-  if (!Array.isArray(items)) {
-    return clone(fallbackItems);
-  }
-
-  const safe = items
+  const sourceItems = Array.isArray(items) ? items : fallbackItems;
+  const safe = sourceItems
     .map((item, index) => {
       const fallback = fallbackItems[index] || fallbackItems[0] || { id: `item-${index}`, name: `Item ${index + 1}`, price: 0 };
       const id = typeof item?.id === "string" && item.id.trim() ? item.id.trim() : fallback.id;
@@ -82,7 +83,20 @@ function sanitizeItems(items, fallbackItems) {
     })
     .filter((item) => item.id);
 
-  return safe.length ? safe : clone(fallbackItems);
+  const fallbackDeposit = fallbackItems.find((item) => item.id === "deposit");
+  const nonDeposit = safe.filter((item) => item.id !== "deposit");
+  if (!fallbackDeposit) {
+    return nonDeposit.length ? nonDeposit : clone(fallbackItems);
+  }
+
+  const safeDeposit = safe.find((item) => item.id === "deposit");
+  const deposit = {
+    id: "deposit",
+    name: safeDeposit?.name || fallbackDeposit.name,
+    price: normalizePrice(safeDeposit?.price, fallbackDeposit.price),
+    autoDeposit: false
+  };
+  return [...nonDeposit, deposit];
 }
 
 function sanitizeCatalogs(catalogs) {
@@ -91,6 +105,138 @@ function sanitizeCatalogs(catalogs) {
     cocktail: sanitizeItems(catalogs?.cocktail, DEFAULT_CATALOGS.cocktail),
     wurstel: sanitizeItems(catalogs?.wurstel, DEFAULT_CATALOGS.wurstel)
   };
+}
+
+function createEmptyStats() {
+  return {
+    version: 1,
+    updatedAt: Date.now(),
+    items: {}
+  };
+}
+
+function sanitizeStats(raw) {
+  if (!raw || typeof raw !== "object") {
+    return createEmptyStats();
+  }
+
+  const items = {};
+  const sourceItems = raw.items && typeof raw.items === "object" ? raw.items : {};
+  Object.entries(sourceItems).forEach(([key, value]) => {
+    if (!key || !value || typeof value !== "object") {
+      return;
+    }
+
+    const calcId = typeof value.calcId === "string" ? value.calcId : "";
+    const itemId = typeof value.itemId === "string" ? value.itemId : "";
+    const itemName = typeof value.itemName === "string" ? value.itemName : itemId;
+    const legacyTotal = Number.isFinite(value.total) && value.total >= 0 ? Math.floor(value.total) : 0;
+    const totalPlus = Number.isFinite(value.totalPlus) && value.totalPlus >= 0 ? Math.floor(value.totalPlus) : legacyTotal;
+    const totalMinus = Number.isFinite(value.totalMinus) && value.totalMinus >= 0 ? Math.floor(value.totalMinus) : 0;
+    const sourceSeries = Array.isArray(value.series) ? value.series : [];
+    const series = sourceSeries
+      .map((entry) => ({
+        bucket: Number.isFinite(entry?.bucket) ? Math.floor(entry.bucket) : 0,
+        countPlus: Number.isFinite(entry?.countPlus) && entry.countPlus >= 0
+          ? Math.floor(entry.countPlus)
+          : (Number.isFinite(entry?.count) && entry.count >= 0 ? Math.floor(entry.count) : 0),
+        countMinus: Number.isFinite(entry?.countMinus) && entry.countMinus >= 0 ? Math.floor(entry.countMinus) : 0
+      }))
+      .filter((entry) => entry.bucket > 0 && (entry.countPlus > 0 || entry.countMinus > 0))
+      .sort((a, b) => a.bucket - b.bucket)
+      .slice(-STATS_SERIES_LIMIT);
+
+    items[key] = { calcId, itemId, itemName, total: totalPlus, totalPlus, totalMinus, series };
+  });
+
+  return {
+    version: 1,
+    updatedAt: Number.isFinite(raw.updatedAt) ? Math.floor(raw.updatedAt) : Date.now(),
+    items
+  };
+}
+
+async function readStats() {
+  try {
+    const raw = await fsp.readFile(STATS_FILE, "utf8");
+    return sanitizeStats(JSON.parse(raw));
+  } catch {
+    return createEmptyStats();
+  }
+}
+
+async function writeStats(stats) {
+  await fsp.mkdir(DATA_DIR, { recursive: true });
+  await fsp.writeFile(STATS_FILE, JSON.stringify(sanitizeStats(stats), null, 2), "utf8");
+}
+
+function statsItemKey(calcId, itemId) {
+  return `${calcId}:${itemId}`;
+}
+
+function withStatsLock(work) {
+  const next = statsOpQueue.then(work, work);
+  statsOpQueue = next.catch(() => {});
+  return next;
+}
+
+async function recordStatPress(calcId, itemId, itemName, actionInput) {
+  const safeCalcId = typeof calcId === "string" ? calcId.trim() : "";
+  const safeItemId = typeof itemId === "string" ? itemId.trim() : "";
+  if (!safeCalcId || !safeItemId) {
+    return;
+  }
+
+  await withStatsLock(async () => {
+    const safeItemName = typeof itemName === "string" && itemName.trim() ? itemName.trim() : safeItemId;
+    const action = actionInput === "minus" ? "minus" : "plus";
+    const stats = await readStats();
+    const key = statsItemKey(safeCalcId, safeItemId);
+    const bucket = Math.floor(Date.now() / STATS_BUCKET_MS) * STATS_BUCKET_MS;
+    const existing = stats.items[key] || {
+      calcId: safeCalcId,
+      itemId: safeItemId,
+      itemName: safeItemName,
+      total: 0,
+      totalPlus: 0,
+      totalMinus: 0,
+      series: []
+    };
+
+    existing.calcId = safeCalcId;
+    existing.itemId = safeItemId;
+    existing.itemName = safeItemName;
+    existing.totalPlus = Number.isFinite(existing.totalPlus) ? existing.totalPlus : (Number.isFinite(existing.total) ? existing.total : 0);
+    existing.totalMinus = Number.isFinite(existing.totalMinus) ? existing.totalMinus : 0;
+    if (action === "minus") {
+      existing.totalMinus += 1;
+    } else {
+      existing.totalPlus += 1;
+    }
+    existing.total = existing.totalPlus;
+
+    const lastPoint = existing.series[existing.series.length - 1];
+    if (lastPoint && lastPoint.bucket === bucket) {
+      lastPoint.countPlus = Number.isFinite(lastPoint.countPlus) ? lastPoint.countPlus : (Number.isFinite(lastPoint.count) ? lastPoint.count : 0);
+      lastPoint.countMinus = Number.isFinite(lastPoint.countMinus) ? lastPoint.countMinus : 0;
+      if (action === "minus") {
+        lastPoint.countMinus += 1;
+      } else {
+        lastPoint.countPlus += 1;
+      }
+    } else {
+      existing.series.push({
+        bucket,
+        countPlus: action === "plus" ? 1 : 0,
+        countMinus: action === "minus" ? 1 : 0
+      });
+    }
+    existing.series = existing.series.slice(-STATS_SERIES_LIMIT);
+
+    stats.items[key] = existing;
+    stats.updatedAt = Date.now();
+    await writeStats(stats);
+  });
 }
 
 async function readCatalogs() {
@@ -268,6 +414,36 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  if (url.pathname === "/api/stats" && req.method === "GET") {
+    const stats = await readStats();
+    return sendJson(res, 200, stats);
+  }
+
+  if (url.pathname === "/api/stats/press" && req.method === "POST") {
+    try {
+      const body = await readBody(req);
+      const parsed = JSON.parse(body || "{}");
+      await recordStatPress(parsed?.calcId, parsed?.itemId, parsed?.itemName, parsed?.action);
+      return sendJson(res, 200, { ok: true });
+    } catch {
+      return sendJson(res, 400, { error: "invalid payload" });
+    }
+  }
+
+  if (url.pathname === "/api/admin/stats/reset" && req.method === "POST") {
+    if (!adminConfigured) {
+      return sendJson(res, 503, { error: "admin password not configured" });
+    }
+    if (!authenticated) {
+      return sendJson(res, 401, { error: "unauthorized" });
+    }
+    await withStatsLock(async () => {
+      const empty = createEmptyStats();
+      await writeStats(empty);
+    });
+    return sendJson(res, 200, { ok: true });
+  }
+
   if (!["GET", "HEAD"].includes(req.method || "")) {
     res.writeHead(405);
     return res.end();
@@ -311,7 +487,10 @@ const server = http.createServer(async (req, res) => {
 server.listen(PORT, HOST, async () => {
   await fsp.mkdir(DATA_DIR, { recursive: true });
   const catalogs = await readCatalogs();
+  const stats = await readStats();
   await writeCatalogs(catalogs);
+  await writeStats(stats);
   console.log(`CKM server running on http://${HOST}:${PORT}`);
   console.log(`Catalog file: ${CATALOG_FILE}`);
+  console.log(`Stats file: ${STATS_FILE}`);
 });

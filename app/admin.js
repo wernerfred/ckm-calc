@@ -45,7 +45,12 @@ refs.addForm.addEventListener("submit", (event) => {
     autoDeposit: refs.newAutoDeposit.checked
   };
 
-  catalogs[calcId].push(item);
+  const depositIndex = catalogs[calcId].findIndex((entry) => entry.id === "deposit");
+  if (depositIndex >= 0) {
+    catalogs[calcId].splice(depositIndex, 0, item);
+  } else {
+    catalogs[calcId].push(item);
+  }
   saveAndRender();
 
   refs.newName.value = "";
@@ -56,7 +61,7 @@ refs.addForm.addEventListener("submit", (event) => {
 if (refs.logoutBtn) {
   refs.logoutBtn.addEventListener("click", async () => {
     try {
-      await fetch("/api/admin/logout", { method: "POST" });
+      await fetch(window.CKM.apiPath("/api/admin/logout"), { method: "POST" });
     } catch {}
     window.location.href = "./admin-login.html";
   });
@@ -66,6 +71,7 @@ function render() {
   refs.itemList.innerHTML = "";
 
   catalogs[calcId].forEach((item) => {
+    const isDepositItem = item.id === "deposit";
     const card = document.createElement("article");
     card.className = "item";
     card.innerHTML = `
@@ -80,10 +86,10 @@ function render() {
         </label>
       </div>
       <label class="toggle">
-        <input type="checkbox" data-field="autoDeposit" ${item.autoDeposit ? "checked" : ""} />
+        <input type="checkbox" data-field="autoDeposit" ${item.autoDeposit ? "checked" : ""} ${isDepositItem ? "disabled" : ""} />
         <span>Auto Pfand (2€) bei +</span>
       </label>
-      <button type="button" class="remove">Artikel entfernen</button>
+      <button type="button" class="remove" ${isDepositItem ? "disabled" : ""}>${isDepositItem ? "Pfand ist fix" : "Artikel entfernen"}</button>
     `;
 
     const nameInput = card.querySelector('input[data-field="name"]');
@@ -107,11 +113,14 @@ function render() {
     });
 
     autoInput.addEventListener("change", () => {
-      item.autoDeposit = autoInput.checked;
+      item.autoDeposit = isDepositItem ? false : autoInput.checked;
       saveAndRender();
     });
 
     removeBtn.addEventListener("click", () => {
+      if (isDepositItem) {
+        return;
+      }
       catalogs[calcId] = catalogs[calcId].filter((entry) => entry.id !== item.id);
       saveAndRender();
     });
