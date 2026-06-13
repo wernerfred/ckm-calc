@@ -2,6 +2,14 @@
 
 Mobile-first cash register web app for CKM with variants (`Punsch`, `Cocktail`, `Würstel`), admin editing, and offline-capable frontend caching.
 
+## Local Run
+
+```bash
+ADMIN_PASSWORD='change-me' node app/server.js
+```
+
+Open: `http://localhost:8080`
+
 ## Docker (recommended)
 
 Build:
