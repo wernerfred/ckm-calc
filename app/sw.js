@@ -1,4 +1,4 @@
-const CACHE_NAME = "ckm-kasse-v10";
+const CACHE_NAME = "ckm-kasse-v17";
 const APP_ASSETS = [
   "./",
   "./index.html",
@@ -10,6 +10,9 @@ const APP_ASSETS = [
   "./punsch.html",
   "./cocktail.html",
   "./wurstel.html",
+  "./statistik.html",
+  "./statistik.css",
+  "./statistik.js",
   "./style.css",
   "./app.js",
   "./manifest.webmanifest"

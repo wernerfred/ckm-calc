@@ -61,7 +61,7 @@ refs.addForm.addEventListener("submit", (event) => {
 if (refs.logoutBtn) {
   refs.logoutBtn.addEventListener("click", async () => {
     try {
-      await fetch("/api/admin/logout", { method: "POST" });
+      await fetch(window.CKM.apiPath("/api/admin/logout"), { method: "POST" });
     } catch {}
     window.location.href = "./admin-login.html";
   });

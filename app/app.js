@@ -196,8 +196,10 @@ function applyAction(id, action) {
   if (id === "deposit" && HAS_DEPOSIT) {
     if (action === "plus") {
       state.deposit.manualAdded += 1;
+      trackStatPress(id, "plus");
     } else {
       state.deposit.manualRemoved += 1;
+      trackStatPress(id, "minus");
     }
     return;
   }
@@ -205,8 +207,10 @@ function applyAction(id, action) {
   const current = state.counts[id] || 0;
   if (action === "plus") {
     state.counts[id] = current + 1;
+    trackStatPress(id, "plus");
     if (HAS_DEPOSIT && AUTO_DEPOSIT_ITEM_IDS.has(id)) {
       state.deposit.autoFromDrinks += 1;
+      trackStatPress("deposit", "plus");
     }
     return;
   }
@@ -219,6 +223,32 @@ function applyAction(id, action) {
   if (HAS_DEPOSIT && AUTO_DEPOSIT_ITEM_IDS.has(id) && state.deposit.autoFromDrinks > 0) {
     state.deposit.autoFromDrinks -= 1;
   }
+}
+
+function trackStatPress(itemId, action) {
+  const item = ITEMS.find((entry) => entry.id === itemId);
+  const statsPressUrl = window.CKM?.apiPath ? window.CKM.apiPath("/api/stats/press") : "/api/stats/press";
+  const payload = JSON.stringify({
+    calcId: CALC_ID,
+    itemId,
+    itemName: item?.name || itemId,
+    action: action === "minus" ? "minus" : "plus"
+  });
+
+  try {
+    if (navigator.sendBeacon) {
+      const blob = new Blob([payload], { type: "application/json" });
+      navigator.sendBeacon(statsPressUrl, blob);
+      return;
+    }
+  } catch {}
+
+  fetch(statsPressUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: payload,
+    keepalive: true
+  }).catch(() => {});
 }
 
 function render() {

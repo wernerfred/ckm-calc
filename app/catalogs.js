@@ -1,5 +1,5 @@
 const CATALOGS_STORAGE_KEY = "ckm-catalogs-v1";
-const CATALOGS_API_PATH = "/api/catalogs";
+const CATALOGS_API_PATH = resolveApiPath("/api/catalogs");
 
 const CKM_DEFAULT_CATALOGS = {
   punsch: [
@@ -93,6 +93,18 @@ function saveCatalogs(catalogs) {
   localStorage.setItem(CATALOGS_STORAGE_KEY, JSON.stringify(catalogs));
 }
 
+function resolveApiPath(path) {
+  const normalizedPath = path.startsWith("/") ? path : `/${path}`;
+  if (window.location.protocol !== "file:") {
+    return normalizedPath;
+  }
+
+  const configuredOrigin = localStorage.getItem("ckm_api_origin");
+  const fallbackOrigin = "http://localhost:8080";
+  const origin = (configuredOrigin || fallbackOrigin).replace(/\/+$/, "");
+  return `${origin}${normalizedPath}`;
+}
+
 async function fetchCatalogsFromServer() {
   const response = await fetch(CATALOGS_API_PATH, { cache: "no-store" });
   if (!response.ok) {
@@ -152,5 +164,6 @@ window.CKM = {
   loadCatalogs,
   saveCatalogs,
   saveCatalogsRemote,
-  normalizePrice
+  normalizePrice,
+  apiPath: resolveApiPath
 };

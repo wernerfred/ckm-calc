@@ -18,6 +18,7 @@
         <a class="entry" href="./admin-edit.html?calc=wurstel">Würstel</a>
       </nav>
       <div class="aux-actions">
+        <button class="aux-btn" id="resetStatsBtn" type="button">Statistik zurücksetzen</button>
         <button class="aux-btn" id="logoutBtn" type="button">Logout</button>
         <a class="aux-btn" href="./index.html">Zurück</a>
       </div>
@@ -28,10 +29,37 @@
           navigator.serviceWorker.register("./sw.js").catch(() => {});
         });
       }
+      const apiPath = (() => {
+        if (window.location.protocol !== "file:") {
+          return (path) => path;
+        }
+        const configuredOrigin = localStorage.getItem("ckm_api_origin");
+        const fallbackOrigin = "http://localhost:8080";
+        const origin = (configuredOrigin || fallbackOrigin).replace(/\/+$/, "");
+        return (path) => `${origin}${path.startsWith("/") ? path : `/${path}`}`;
+      })();
       const logoutBtn = document.getElementById("logoutBtn");
+      const resetStatsBtn = document.getElementById("resetStatsBtn");
+
+      resetStatsBtn.addEventListener("click", async () => {
+        const confirmed = window.confirm("Statistik wirklich zurücksetzen?");
+        if (!confirmed) {
+          return;
+        }
+        try {
+          const response = await fetch(apiPath("/api/admin/stats/reset"), { method: "POST" });
+          if (!response.ok) {
+            throw new Error("reset failed");
+          }
+          window.alert("Statistik wurde zurückgesetzt.");
+        } catch {
+          window.alert("Zurücksetzen fehlgeschlagen.");
+        }
+      });
+
       logoutBtn.addEventListener("click", async () => {
         try {
-          await fetch("/api/admin/logout", { method: "POST" });
+          await fetch(apiPath("/api/admin/logout"), { method: "POST" });
         } catch {}
         window.location.href = "./admin-login.html";
       });

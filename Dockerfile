@@ -11,4 +11,4 @@ ENV DATA_DIR=/data
 EXPOSE 8080
 VOLUME ["/data"]
 
-CMD ["node", "app/server.js"]
+CMD ["node", "server.js"]

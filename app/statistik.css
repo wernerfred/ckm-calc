@@ -1,0 +1,156 @@
+:root {
+  --bg: #0f2228;
+  --bg-soft: #17343c;
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #f4fbfc;
+  --muted: #b4cfd6;
+  --accent: #7df4d0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Roboto Condensed", "Arial Narrow", "Liberation Sans Narrow", "Helvetica Neue", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: linear-gradient(165deg, var(--bg), var(--bg-soft));
+}
+
+.stats-page {
+  width: min(980px, 100% - 1rem);
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 0.8rem) 0 1rem;
+}
+
+.stats-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.3rem, 5vw, 2rem);
+}
+
+.subtitle,
+.last-updated {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.back-btn {
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.35rem 0.55rem;
+}
+
+.stats-content {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.7rem;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 1rem);
+}
+
+.calc-section {
+  background: rgba(15, 40, 48, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 0.9rem;
+  padding: 0.6rem;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.calc-title {
+  font-size: 1.2rem;
+}
+
+.item-grid {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.item-card {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.75rem;
+  padding: 0.55rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.item-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.item-name {
+  font-size: 1.08rem;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.item-count {
+  color: var(--accent);
+  font-size: 1.25rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.item-count-split {
+  display: flex;
+  align-items: baseline;
+  gap: 0.42rem;
+}
+
+.count-plus {
+  color: #7df4d0;
+}
+
+.count-minus {
+  color: #ff9b9b;
+}
+
+.item-sub {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.graph-wrap {
+  height: 130px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 0.6rem;
+  background: rgba(0, 0, 0, 0.14);
+  padding: 0.25rem;
+}
+
+.graph {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
