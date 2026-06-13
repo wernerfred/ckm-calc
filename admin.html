@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12343b" />
+    <title>CKM Administration</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="launcher.css" />
+  </head>
+  <body>
+    <main class="launcher">
+      <h1>Administration</h1>
+      <p>Calculator auswählen</p>
+      <nav class="menu" aria-label="Admin Auswahl">
+        <a class="entry" href="./admin-edit.html?calc=punsch">Punsch</a>
+        <a class="entry" href="./admin-edit.html?calc=cocktail">Cocktail</a>
+        <a class="entry" href="./admin-edit.html?calc=wurstel">Würstel</a>
+      </nav>
+      <div class="aux-actions">
+        <button class="aux-btn" id="logoutBtn" type="button">Logout</button>
+        <a class="aux-btn" href="./index.html">Zurück</a>
+      </div>
+    </main>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("./sw.js").catch(() => {});
+        });
+      }
+      const logoutBtn = document.getElementById("logoutBtn");
+      logoutBtn.addEventListener("click", async () => {
+        try {
+          await fetch("/api/admin/logout", { method: "POST" });
+        } catch {}
+        window.location.href = "./admin-login.html";
+      });
+    </script>
+  </body>
+</html>

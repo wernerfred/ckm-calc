@@ -1,0 +1,9 @@
+{
+  "name": "CKM Kasse",
+  "short_name": "CKM Kasse",
+  "lang": "de-DE",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f2228",
+  "theme_color": "#12343b"
+}

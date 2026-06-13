@@ -1,0 +1,11 @@
+services:
+  ckm-calc:
+    build: .
+    container_name: ckm-calc
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMIN_PASSWORD=change-me
+    volumes:
+      - ./data:/data
+    restart: unless-stopped
