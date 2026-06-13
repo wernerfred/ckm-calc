@@ -1,0 +1,88 @@
+:root {
+  --bg: #0f2228;
+  --bg-soft: #17343c;
+  --line: rgba(255, 255, 255, 0.18);
+  --text: #f4fbfc;
+  --muted: #b4cfd6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: linear-gradient(165deg, var(--bg), var(--bg-soft));
+}
+
+.launcher {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.7rem;
+  align-content: center;
+  padding: calc(env(safe-area-inset-top) + 1rem) 1rem calc(env(safe-area-inset-bottom) + 1rem);
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.8rem, 8vw, 2.8rem);
+  line-height: 1;
+}
+
+p {
+  margin: 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 3.8vw, 1.3rem);
+}
+
+.menu {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.entry {
+  display: grid;
+  place-items: center;
+  min-height: 4.4rem;
+  border-radius: 0.9rem;
+  border: 1px solid var(--line);
+  background: rgba(15, 40, 48, 0.9);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: clamp(1.15rem, 5vw, 1.7rem);
+}
+
+.aux-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.aux-btn {
+  min-height: 2.2rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: rgba(15, 40, 48, 0.82);
+  color: var(--text);
+  text-decoration: none;
+  display: grid;
+  place-items: center;
+  font-size: clamp(0.8rem, 3vw, 1rem);
+  font-weight: 700;
+}
+
+button.aux-btn[disabled] {
+  opacity: 0.55;
+}

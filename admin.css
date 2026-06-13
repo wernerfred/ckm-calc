@@ -1,0 +1,142 @@
+:root {
+  --bg: #0f2228;
+  --bg-soft: #17343c;
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #f4fbfc;
+  --muted: #b4cfd6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: linear-gradient(165deg, var(--bg), var(--bg-soft));
+}
+
+.admin-app {
+  width: min(900px, 100% - 1rem);
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 0.7rem) 0 calc(env(safe-area-inset-bottom) + 0.7rem);
+  display: grid;
+  gap: 0.65rem;
+}
+
+.admin-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.2rem, 5vw, 1.8rem);
+}
+
+.back {
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  padding: 0.35rem 0.55rem;
+  background: transparent;
+}
+
+.logout {
+  color: #ffd4d4;
+  border-color: rgba(255, 140, 140, 0.55);
+}
+
+.item-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.item {
+  background: rgba(15, 40, 48, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  padding: 0.6rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  gap: 0.45rem;
+}
+
+label span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.16rem;
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0.55rem;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  font-size: 1rem;
+  padding: 0.45rem 0.5rem;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.toggle input {
+  width: auto;
+}
+
+.remove {
+  justify-self: end;
+  border: 1px solid rgba(255, 130, 130, 0.55);
+  background: transparent;
+  color: #ffd1d1;
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.5rem;
+}
+
+.add-form {
+  background: rgba(15, 40, 48, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  padding: 0.6rem;
+  display: grid;
+  gap: 0.42rem;
+}
+
+.add-form button {
+  border: 0;
+  border-radius: 0.6rem;
+  background: #7df4d0;
+  color: #042319;
+  font-size: 1rem;
+  font-weight: 800;
+  min-height: 2.45rem;
+}

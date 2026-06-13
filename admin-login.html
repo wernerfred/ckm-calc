@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#12343b" />
+    <title>CKM Admin Login</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="admin-login.css" />
+  </head>
+  <body>
+    <main class="login-wrap">
+      <h1>Administration Login</h1>
+      <form id="loginForm" class="login-card">
+        <label>
+          <span>Passwort</span>
+          <input id="password" type="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit">Anmelden</button>
+        <p id="message" class="message" aria-live="polite"></p>
+      </form>
+      <a href="./index.html" class="back">Zurück zur Auswahl</a>
+    </main>
+
+    <script src="admin-login.js"></script>
+  </body>
+</html>

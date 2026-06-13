@@ -1,0 +1,88 @@
+:root {
+  --bg: #0f2228;
+  --bg-soft: #17343c;
+  --line: rgba(255, 255, 255, 0.16);
+  --text: #f4fbfc;
+  --muted: #b4cfd6;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+  color: var(--text);
+  background: linear-gradient(165deg, var(--bg), var(--bg-soft));
+}
+
+.login-wrap {
+  min-height: 100dvh;
+  display: grid;
+  align-content: center;
+  gap: 0.8rem;
+  width: min(460px, 100% - 1rem);
+  margin: 0 auto;
+  padding: calc(env(safe-area-inset-top) + 1rem) 0 calc(env(safe-area-inset-bottom) + 1rem);
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-size: clamp(1.3rem, 5.5vw, 2rem);
+}
+
+.login-card {
+  display: grid;
+  gap: 0.5rem;
+  background: rgba(15, 40, 48, 0.92);
+  border: 1px solid var(--line);
+  border-radius: 0.85rem;
+  padding: 0.75rem;
+}
+
+label span {
+  display: block;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+input {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 0.56rem;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+  font-size: 1rem;
+  padding: 0.52rem;
+}
+
+button {
+  border: 0;
+  border-radius: 0.6rem;
+  min-height: 2.5rem;
+  background: #7df4d0;
+  color: #042319;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.message {
+  min-height: 1.1rem;
+  font-size: 0.85rem;
+  color: #ffd5d5;
+  margin: 0;
+}
+
+.back {
+  text-align: center;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.92rem;
+  opacity: 0.9;
+}
