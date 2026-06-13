@@ -21,6 +21,9 @@ const totalEl = document.getElementById("total");
 const hintsEl = document.getElementById("changeHints");
 const rowsEl = document.getElementById("rows");
 const resetEl = document.getElementById("reset");
+const ITEM_TITLE_MAX_PX = 31;
+const ITEM_TITLE_MIN_PX = 10;
+let fitTitlesRafId = 0;
 
 registerServiceWorker();
 boot();
@@ -33,12 +36,15 @@ async function boot() {
 
   renderRows();
   render();
+  scheduleFitItemTitleSize();
 
   resetEl.addEventListener("click", () => {
     state = cloneInitialState();
     persist();
     render();
   });
+
+  window.addEventListener("resize", scheduleFitItemTitleSize);
 }
 
 function configureCatalog(items) {
@@ -117,6 +123,8 @@ function renderRows() {
     rowsEl.appendChild(row);
   });
 
+  scheduleFitItemTitleSize();
+
   rowsEl.addEventListener("click", (event) => {
     const button = event.target.closest("button[data-action]");
     if (!button) {
@@ -128,6 +136,59 @@ function renderRows() {
     applyAction(id, action);
     persist();
     render();
+  });
+}
+
+function scheduleFitItemTitleSize() {
+  if (fitTitlesRafId) {
+    cancelAnimationFrame(fitTitlesRafId);
+  }
+  fitTitlesRafId = requestAnimationFrame(() => {
+    fitTitlesRafId = 0;
+    fitItemTitleSize();
+  });
+}
+
+function fitItemTitleSize() {
+  const titleEls = Array.from(rowsEl.querySelectorAll(".item h2"));
+  if (!titleEls.length) {
+    return;
+  }
+
+  titleEls.forEach((el) => {
+    el.style.fontSize = "";
+  });
+
+  const cssMaxForViewport = Number.parseFloat(getComputedStyle(titleEls[0]).fontSize) || ITEM_TITLE_MAX_PX;
+  const maxPx = Math.min(ITEM_TITLE_MAX_PX, cssMaxForViewport);
+
+  let low = ITEM_TITLE_MIN_PX;
+  let high = maxPx;
+  let best = ITEM_TITLE_MIN_PX;
+
+  const fitsAt = (px) => {
+    titleEls.forEach((el) => {
+      el.style.fontSize = `${px}px`;
+    });
+    return titleEls.every((el) => el.scrollWidth <= el.clientWidth + 1);
+  };
+
+  if (!fitsAt(low)) {
+    return;
+  }
+
+  while (high - low > 0.5) {
+    const mid = (low + high) / 2;
+    if (fitsAt(mid)) {
+      best = mid;
+      low = mid;
+    } else {
+      high = mid;
+    }
+  }
+
+  titleEls.forEach((el) => {
+    el.style.fontSize = `${best.toFixed(2)}px`;
   });
 }
 

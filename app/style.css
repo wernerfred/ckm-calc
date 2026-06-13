@@ -9,6 +9,7 @@
   --minus: #ff7d7d;
   --warn: #ffb35a;
   --radius: 0.75rem;
+  --item-title-size: clamp(1.25rem, 4.8vw, 1.95rem);
 }
 
 * {
@@ -24,7 +25,7 @@ body {
 }
 
 body {
-  font-family: "Avenir Next", "SF Pro Text", "Segoe UI", sans-serif;
+  font-family: "Roboto Condensed", "Arial Narrow", "Liberation Sans Narrow", "Helvetica Neue", "Segoe UI", sans-serif;
   color: var(--text);
   background: linear-gradient(165deg, var(--bg), var(--bg-soft));
   -webkit-font-smoothing: antialiased;
@@ -133,6 +134,7 @@ body {
   display: grid;
   grid-template-rows: repeat(5, minmax(0, 1fr));
   gap: 0.38rem;
+  overflow: hidden;
 }
 
 .row {
@@ -142,6 +144,7 @@ body {
   gap: 0.4rem;
   align-items: center;
   padding: 0.4rem;
+  overflow: hidden;
 }
 
 .item {
@@ -152,9 +155,12 @@ body {
 
 .item h2 {
   margin: 0;
-  font-size: clamp(1.25rem, 4.8vw, 1.95rem);
+  font-size: var(--item-title-size);
   font-weight: 850;
-  line-height: 0.98;
+  line-height: 1.02;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .meta {
@@ -163,6 +169,9 @@ body {
   font-size: clamp(1rem, 3.3vw, 1.35rem);
   font-weight: 700;
   line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .actions {
@@ -171,6 +180,7 @@ body {
   gap: 0.35rem;
   height: 100%;
   align-self: stretch;
+  min-width: 0;
 }
 
 .action {
@@ -182,6 +192,7 @@ body {
   min-height: 0;
   height: 100%;
   line-height: 1;
+  overflow: hidden;
 }
 
 .action.plus {
@@ -217,7 +228,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: clamp(2rem, 11vw, 4.4rem);
+  font-size: clamp(1rem, 5vw, 2.2rem);
   font-weight: 800;
   color: rgba(7, 36, 23, 0.4);
   line-height: 0.85;
